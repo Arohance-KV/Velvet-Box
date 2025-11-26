@@ -15,7 +15,6 @@ import {
   uploadVideoRecording 
 } from '../redux/jobSlice';
 
-
 const JobApplicationForm = ({ jobData }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
@@ -29,12 +28,10 @@ const JobApplicationForm = ({ jobData }) => {
   const [uploadedFileUrls, setUploadedFileUrls] = useState({});
   const [isUploading, setIsUploading] = useState(false);
 
-
   const loading = useSelector(selectApplicationLoading);
   const error = useSelector(selectApplicationError);
   const submitStatus = useSelector(selectSubmitStatus);
   const submittedApplication = useSelector(selectCurrentApplication);
-
 
   const handleFieldChange = (fieldName, value) => {
     setFormData(prev => ({ ...prev, [fieldName]: value }));
@@ -43,7 +40,6 @@ const JobApplicationForm = ({ jobData }) => {
     }
   };
 
-
   const handleFileChange = (fieldName, file, fieldType) => {
     setFiles(prev => ({ ...prev, [fieldName]: file }));
     setFileFieldTypes(prev => ({ ...prev, [fieldName]: fieldType }));
@@ -51,7 +47,6 @@ const JobApplicationForm = ({ jobData }) => {
       setErrors(prev => ({ ...prev, [fieldName]: null }));
     }
   };
-
 
   const validateField = (field, value) => {
     const fileBasedTypes = ['file', 'voice_recording', 'video_recording'];
@@ -66,15 +61,12 @@ const JobApplicationForm = ({ jobData }) => {
       }
     }
 
-
     if (!value && !field.isRequired) {
       return null;
     }
 
-
     if (field.validation) {
       const { min, max, minLength, maxLength } = field.validation;
-
 
       if (field.fieldType === 'number') {
         const numValue = Number(value);
@@ -85,7 +77,6 @@ const JobApplicationForm = ({ jobData }) => {
           return `Maximum value is ${max}`;
         }
       }
-
 
       if (field.fieldType === 'textarea' || field.fieldType === 'text') {
         if (value && typeof value === 'string') {
@@ -99,14 +90,12 @@ const JobApplicationForm = ({ jobData }) => {
       }
     }
 
-
     if (field.fieldType === 'url' && value) {
       const urlPattern = /^https?:\/\/.+/;
       if (!urlPattern.test(value)) {
         return 'Please enter a valid URL';
       }
     }
-
 
     if (field.fieldType === 'email' && value) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -115,10 +104,8 @@ const JobApplicationForm = ({ jobData }) => {
       }
     }
 
-
     return null;
   };
-
 
   const uploadFiles = async () => {
     const fileUploads = {};
@@ -170,23 +157,35 @@ const JobApplicationForm = ({ jobData }) => {
     return fileUploads;
   };
 
-
   const getSectionMediaType = (section) => {
     const title = section.sectionTitle.toLowerCase();
-    if (title.includes('voice') || title.includes('audio')) {
+    const description = section.sectionDescription?.toLowerCase() || '';
+    
+    // Check for voice/audio keywords
+    if (title.includes('voice') || title.includes('audio') || title.includes('recording') && !title.includes('video')) {
       return 'voice_recording';
     }
+    
+    // Check for video keywords
     if (title.includes('video')) {
       return 'video_recording';
     }
+    
+    // Check description as fallback
+    if (description.includes('voice') || description.includes('audio') || description.includes('record yourself')) {
+      return 'voice_recording';
+    }
+    
+    if (description.includes('video')) {
+      return 'video_recording';
+    }
+    
     return null;
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {};
-
 
     if (!formData.name || formData.name.trim().length === 0) {
       newErrors.name = 'Name is required';
@@ -203,10 +202,8 @@ const JobApplicationForm = ({ jobData }) => {
       newErrors.phone = 'Phone is required';
     }
 
-
+    // Validate custom sections
     jobData.customSections?.forEach(section => {
-      const mediaType = getSectionMediaType(section);
-      
       if (section.fields && section.fields.length > 0) {
         section.fields.forEach(field => {
           const fileBasedTypes = ['file', 'voice_recording', 'video_recording'];
@@ -223,15 +220,8 @@ const JobApplicationForm = ({ jobData }) => {
             newErrors[field.fieldName] = error;
           }
         });
-      } 
-      else if (mediaType) {
-        const sectionFieldName = section.sectionTitle;
-        if (!files[sectionFieldName]) {
-          newErrors[sectionFieldName] = `${section.sectionTitle} is required`;
-        }
       }
     });
-
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -239,12 +229,10 @@ const JobApplicationForm = ({ jobData }) => {
       return;
     }
 
-
     try {
       setIsUploading(true);
       const uploadedFiles = await uploadFiles();
       setIsUploading(false);
-
 
       const responses = [];
       
@@ -280,6 +268,7 @@ const JobApplicationForm = ({ jobData }) => {
             responses.push(responseObj);
           });
         }
+        // FIXED: Handle sections without fields (voice/video recording sections)
         else if (mediaType) {
           const sectionFieldName = section.sectionTitle;
           const uploadedFile = uploadedFiles[sectionFieldName];
@@ -302,7 +291,6 @@ const JobApplicationForm = ({ jobData }) => {
         }
       });
 
-
       const applicationData = {
         jobListingId: jobData._id,
         candidate: {
@@ -316,12 +304,9 @@ const JobApplicationForm = ({ jobData }) => {
         }
       };
 
-
       console.log('Submitting application:', applicationData);
 
-
       await dispatch(submitApplication(applicationData)).unwrap();
-
 
     } catch (err) {
       console.error('Submission error:', err);
@@ -331,7 +316,6 @@ const JobApplicationForm = ({ jobData }) => {
     }
   };
 
-
   useEffect(() => {
     if (submitStatus === 'succeeded') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -340,7 +324,6 @@ const JobApplicationForm = ({ jobData }) => {
       }, 5000);
     }
   }, [submitStatus, dispatch]);
-
 
   // Helper function to get file icon based on MIME type
   const getFileIcon = (mimeType) => {
@@ -371,7 +354,6 @@ const JobApplicationForm = ({ jobData }) => {
       </svg>
     );
   };
-
 
   // Render media files section
   const renderMediaFiles = () => {
@@ -442,31 +424,28 @@ const JobApplicationForm = ({ jobData }) => {
     );
   };
 
-
   const renderCustomSections = () => {
     if (!jobData.customSections) return null;
-
 
     const sortedSections = jobData.customSections
       .slice()
       .sort((a, b) => (a.order || 0) - (b.order || 0));
 
-
     return sortedSections.map((section, sectionIndex) => {
       const mediaType = getSectionMediaType(section);
       
+      // FIXED: Render sections with empty fields array that have media type (voice/video)
       if ((!section.fields || section.fields.length === 0) && mediaType) {
         const syntheticField = {
           fieldName: section.sectionTitle,
           fieldLabel: section.sectionTitle,
           fieldType: mediaType,
-          isRequired: true,
-          placeholder: section.sectionDescription
+          isRequired: false, // Optional fields
+          placeholder: section.sectionDescription || `Record your ${mediaType.replace('_', ' ')}`
         };
 
-
         return (
-          <div key={sectionIndex} className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
+          <div key={section._id || sectionIndex} className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
             <h3 className="text-2xl font-extrabold text-gray-900 mb-3">{section.sectionTitle}</h3>
             {section.sectionDescription && (
               <p className="text-gray-600 mb-6 leading-relaxed">{section.sectionDescription}</p>
@@ -484,14 +463,22 @@ const JobApplicationForm = ({ jobData }) => {
         );
       }
 
-
-      if (!section.fields || section.fields.length === 0) {
-        return null;
+      // FIXED: Also render sections with empty fields array that DON'T have media type
+      if ((!section.fields || section.fields.length === 0) && !mediaType) {
+        // This is a section with no fields - just display it as informational
+        return (
+          <div key={section._id || sectionIndex} className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
+            <h3 className="text-2xl font-extrabold text-gray-900 mb-3">{section.sectionTitle}</h3>
+            {section.sectionDescription && (
+              <p className="text-gray-600 leading-relaxed">{section.sectionDescription}</p>
+            )}
+          </div>
+        );
       }
 
-
+      // Render sections with fields
       return (
-        <div key={sectionIndex} className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
+        <div key={section._id || sectionIndex} className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
           <h3 className="text-2xl font-extrabold text-gray-900 mb-3">{section.sectionTitle}</h3>
           {section.sectionDescription && (
             <p className="text-gray-600 mb-6 leading-relaxed">{section.sectionDescription}</p>
@@ -500,9 +487,9 @@ const JobApplicationForm = ({ jobData }) => {
             {section.fields
               .slice()
               .sort((a, b) => (a.order || 0) - (b.order || 0))
-              .map((field) => (
+              .map((field, fieldIndex) => (
                 <FormField
-                  key={field.fieldName}
+                  key={field._id || field.fieldName || fieldIndex}
                   field={field}
                   value={formData[field.fieldName] || ''}
                   onChange={handleFieldChange}
@@ -515,7 +502,6 @@ const JobApplicationForm = ({ jobData }) => {
       );
     });
   };
-
 
   // Success Screen
   if (submitStatus === 'succeeded' && submittedApplication) {
@@ -571,7 +557,6 @@ const JobApplicationForm = ({ jobData }) => {
     return min > 0 || max > 0;
   };
 
-
   return (
     <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-blue-50 py-16 px-4">
       <div className="max-w-5xl mx-auto">
@@ -580,6 +565,77 @@ const JobApplicationForm = ({ jobData }) => {
           <div className="border-l-4 border-blue-600 pl-6">
             <h1 className="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">{jobData.jobTitle}</h1>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">{jobData.jobDescription}</p>
+          </div>
+          
+          {/* Display role, qualifications, tags, expiration date */}
+          <div className="mt-8 space-y-4">
+            {/* Role */}
+            {jobData.role && (
+              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
+                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Role Level</span>
+                <p className="text-base text-gray-900 mt-2 font-medium capitalize">{jobData.role}</p>
+              </div>
+            )}
+
+            {/* Employment Type */}
+            {jobData.employmentType && (
+              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
+                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Employment Type</span>
+                <p className="text-base text-gray-900 mt-2 font-medium capitalize">
+                  {jobData.employmentType.replace('_', ' ')}
+                </p>
+              </div>
+            )}
+
+            {/* Qualifications */}
+            {jobData.qualifications && jobData.qualifications.length > 0 && (
+              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
+                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3 block">Required Qualifications</span>
+                <div className="flex flex-wrap gap-2">
+                  {jobData.qualifications.map((qual, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+                    >
+                      {qual}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Tags/Skills */}
+            {jobData.tags && jobData.tags.length > 0 && (
+              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
+                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3 block">Required Skills</span>
+                <div className="flex flex-wrap gap-2">
+                  {jobData.tags.map((tag, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+                    >
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Expiration Date */}
+            {jobData.expiresAt && (
+              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
+                <span className="text-xs font-bold text-red-600 uppercase tracking-wider">Application Deadline</span>
+                <p className="text-base text-gray-900 mt-2 font-medium">
+                  {new Date(jobData.expiresAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                  })}
+                </p>
+              </div>
+            )}
           </div>
           
           {/* Only render grid if there's at least one item to display */}
@@ -594,7 +650,6 @@ const JobApplicationForm = ({ jobData }) => {
                 </div>
               )}
 
-
               {jobData.location && (
                 <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
                   <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Location</span>
@@ -604,7 +659,6 @@ const JobApplicationForm = ({ jobData }) => {
                   </p>
                 </div>
               )}
-
 
               {shouldDisplaySalary() && (
                 <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100 md:col-span-2">
@@ -619,10 +673,8 @@ const JobApplicationForm = ({ jobData }) => {
           )}
         </div>
 
-
         {/* Media Files Section */}
         {renderMediaFiles()}
-
 
         {/* Application Form */}
         <form onSubmit={handleSubmit} className="space-y-8">
@@ -653,7 +705,6 @@ const JobApplicationForm = ({ jobData }) => {
                 )}
               </div>
 
-
               <div>
                 <label className="block text-sm font-bold text-gray-800 mb-2">
                   Email Address <span className="text-red-500">*</span>
@@ -676,7 +727,6 @@ const JobApplicationForm = ({ jobData }) => {
                   </p>
                 )}
               </div>
-
 
               <div>
                 <label className="block text-sm font-bold text-gray-800 mb-2">
@@ -703,10 +753,8 @@ const JobApplicationForm = ({ jobData }) => {
             </div>
           </div>
 
-
           {/* Custom Sections */}
           {renderCustomSections()}
-
 
           {/* Error Message */}
           {(error || errors.submit) && (
@@ -726,7 +774,6 @@ const JobApplicationForm = ({ jobData }) => {
               </div>
             </div>
           )}
-
 
           {/* Submit Button */}
           <div className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8">
@@ -773,6 +820,5 @@ const JobApplicationForm = ({ jobData }) => {
     </div>
   );
 };
-
 
 export default JobApplicationForm;

@@ -21,15 +21,18 @@ const getAuthHeaders = (isFormData = false) => {
   return headers;
 };
 
-// Create Job Listing
+// Create Job Listing - UPDATED TO REMOVE SLUG
 export const createJobListing = createAsyncThunk(
   'job/createJobListing',
   async (jobData, { rejectWithValue }) => {
     try {
+      // Remove slug from the payload if it exists - backend should generate it
+      const { slug, shareableLink, ...cleanJobData } = jobData;
+      
       const response = await fetch(`${BASE_URL}/joblist`, {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify(jobData),
+        body: JSON.stringify(cleanJobData),
       });
 
       const data = await response.json();
@@ -146,13 +149,14 @@ export const uploadDocument = createAsyncThunk(
   }
 );
 
-// Upload Voice Recording - NEW
+// Upload Voice Recording
 export const uploadVoiceRecording = createAsyncThunk(
   'job/uploadVoiceRecording',
   async ({ file, maxDuration }, { rejectWithValue }) => {
     try {
       const formData = new FormData();
       formData.append('recording', file);
+      
       if (maxDuration) {
         formData.append('maxDuration', maxDuration);
       }
@@ -176,7 +180,7 @@ export const uploadVoiceRecording = createAsyncThunk(
   }
 );
 
-// Upload Video Recording - NEW
+// Upload Video Recording
 export const uploadVideoRecording = createAsyncThunk(
   'job/uploadVideoRecording',
   async ({ file, quality = 'auto:low' }, { rejectWithValue }) => {
@@ -422,7 +426,7 @@ const jobSlice = createSlice({
         state.uploadError = action.payload?.message || 'Failed to upload document';
       });
 
-    // Upload Voice Recording - NEW
+    // Upload Voice Recording
     builder
       .addCase(uploadVoiceRecording.pending, (state) => {
         state.uploadLoading = true;
@@ -438,7 +442,7 @@ const jobSlice = createSlice({
         state.uploadError = action.payload?.message || 'Failed to upload voice recording';
       });
 
-    // Upload Video Recording - NEW
+    // Upload Video Recording
     builder
       .addCase(uploadVideoRecording.pending, (state) => {
         state.uploadLoading = true;
