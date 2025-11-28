@@ -104,7 +104,6 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
   };
 
   // Video Recording Functions
-  // Video Recording Functions
   const startVideoRecording = async () => {
     try {
       const videoStream = await navigator.mediaDevices.getUserMedia({
@@ -183,7 +182,7 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
   };
 
   const baseInputClasses =
-    "mt-1 block w-full rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all placeholder-gray-400 text-lg px-4 py-4";
+    "mt-1 block w-full rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all placeholder-gray-400 text-lg px-4 py-4";
   const inputClasses = error
     ? `${baseInputClasses} border-red-400 ring-2 ring-red-200 text-gray-900 bg-white`
     : `${baseInputClasses} border-gray-300 text-gray-900 bg-white`;
@@ -252,8 +251,8 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
       case "multi_select":
         return (
           <div className="space-y-3">
-            <div className="bg-linear-to-brrom-blue-50 to-indigo-50 border-2 border-blue-200 rounded-xl p-4">
-              <p className="text-sm font-semibold text-blue-900 mb-3 flex items-center">
+            <div className="bg-linear-to-br from-purple-50 to-orange-50 border-2 border-purple-200 rounded-xl p-4">
+              <p className="text-sm font-semibold text-purple-900 mb-3 flex items-center">
                 <svg
                   className="w-4 h-4 mr-2"
                   fill="currentColor"
@@ -271,7 +270,7 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 {field.options?.map((option, index) => (
                   <label
                     key={index}
-                    className="flex items-center space-x-3 p-3 hover:bg-white rounded-lg cursor-pointer transition-all border-2 border-transparent hover:border-blue-300 bg-white/50"
+                    className="flex items-center space-x-3 p-3 hover:bg-white rounded-lg cursor-pointer transition-all border-2 border-transparent hover:border-purple-300 bg-white/50"
                   >
                     <input
                       type="checkbox"
@@ -297,7 +296,7 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                           );
                         }
                       }}
-                      className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
+                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer"
                     />
                     <span className="text-base font-medium text-gray-800">
                       {option.label}
@@ -306,8 +305,8 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 ))}
               </div>
               {Array.isArray(value) && value.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-blue-200">
-                  <p className="text-xs font-semibold text-blue-700">
+                <div className="mt-3 pt-3 border-t border-purple-200">
+                  <p className="text-xs font-semibold text-purple-700">
                     Selected: {value.length} option
                     {value.length !== 1 ? "s" : ""}
                   </p>
@@ -336,12 +335,12 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
       case "checkbox":
         return (
           <div className="space-y-3">
-            <div className="bg-linear-to-brrom-gray-50 to-blue-50 border-2 border-gray-200 rounded-xl p-4">
+            <div className="bg-linear-to-br from-purple-50 to-orange-50 border-2 border-purple-200 rounded-xl p-4">
               <div className="space-y-2">
                 {field.options?.map((option, index) => (
                   <label
                     key={index}
-                    className="flex items-center space-x-3 p-3 hover:bg-white rounded-lg cursor-pointer transition-all border-2 border-transparent hover:border-blue-300 bg-white/50"
+                    className="flex items-center space-x-3 p-3 hover:bg-white rounded-lg cursor-pointer transition-all border-2 border-transparent hover:border-purple-300 bg-white/50"
                   >
                     <input
                       type="checkbox"
@@ -367,7 +366,7 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                           );
                         }
                       }}
-                      className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
+                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer"
                     />
                     <span className="text-base font-medium text-gray-800">
                       {option.value}
@@ -376,8 +375,8 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 ))}
               </div>
               {Array.isArray(value) && value.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-gray-200">
-                  <p className="text-xs font-semibold text-gray-600">
+                <div className="mt-3 pt-3 border-t border-purple-200">
+                  <p className="text-xs font-semibold text-purple-700">
                     Selected: {value.length} option
                     {value.length !== 1 ? "s" : ""}
                   </p>
@@ -407,11 +406,11 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
         return (
           <div className="space-y-4">
             {!recordedAudio ? (
-              <div className="border-3 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-blue-400 hover:bg-blue-50/30 transition-all">
+              <div className="border-3 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-purple-400 hover:bg-purple-50/30 transition-all">
                 {!isRecording ? (
                   <div className="space-y-4">
                     <div className="flex justify-center">
-                      <div className="bg-linear-to-br from-red-500 to-pink-600 p-4 rounded-full">
+                      <div className="bg-linear-to-br from-purple-700 to-orange-400 p-4 rounded-full">
                         <svg
                           className="w-10 h-10 text-white"
                           fill="currentColor"
@@ -428,7 +427,7 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                     <button
                       type="button"
                       onClick={startAudioRecording}
-                      className="inline-flex items-center px-8 py-4 bg-linear-to-r from-red-600 to-pink-600 text-white rounded-full hover:from-red-700 hover:to-pink-700 transition-all duration-200 shadow-xl font-bold text-lg transform hover:scale-105"
+                      className="inline-flex items-center px-8 py-4 bg-linear-to-r from-purple-700 to-orange-400 text-white rounded-full hover:from-purple-800 hover:to-orange-500 transition-all duration-200 shadow-xl font-bold text-lg transform hover:scale-105"
                     >
                       <svg
                         className="w-6 h-6 mr-2"
@@ -548,7 +547,7 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 {!isVideoRecording ? (
                   <div className="space-y-4">
                     <div className="flex justify-center">
-                      <div className="bg-linear-to-br from-purple-600 to-pink-600 p-4 rounded-full">
+                      <div className="bg-linear-to-br from-purple-700 to-orange-400 p-4 rounded-full">
                         <svg
                           className="w-10 h-10 text-white"
                           fill="currentColor"
@@ -561,7 +560,7 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                     <button
                       type="button"
                       onClick={startVideoRecording}
-                      className="inline-flex items-center px-8 py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white rounded-full hover:from-purple-700 hover:to-pink-700 transition-all duration-200 shadow-xl font-bold text-lg transform hover:scale-105"
+                      className="inline-flex items-center px-8 py-4 bg-linear-to-r from-purple-700 to-orange-400 text-white rounded-full hover:from-purple-800 hover:to-orange-500 transition-all duration-200 shadow-xl font-bold text-lg transform hover:scale-105"
                     >
                       <svg
                         className="w-6 h-6 mr-2"
@@ -692,13 +691,13 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 type="file"
                 onChange={handleChange}
                 accept={field.validation?.allowedFileTypes?.join(",")}
-                className="block w-full text-base text-gray-700 bg-white border-2 border-gray-300 rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent file:mr-4 file:py-3 file:px-6 file:rounded-l-xl file:border-0 file:text-base file:font-semibold file:bg-linear-to-r file:from-blue-600 file:to-indigo-600 file:text-white hover:file:from-blue-700 hover:file:to-indigo-700 file:cursor-pointer transition-all"
+                className="block w-full text-base text-gray-700 bg-white border-2 border-gray-300 rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent file:mr-4 file:py-3 file:px-6 file:rounded-l-xl file:border-0 file:text-base file:font-semibold file:bg-linear-to-r file:from-purple-700 file:to-orange-400 file:text-white hover:file:from-purple-800 hover:file:to-orange-500 file:cursor-pointer transition-all"
                 required={field.isRequired}
               />
             </div>
             {field.validation?.maxSize && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                <p className="text-xs text-blue-700 flex items-center">
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
+                <p className="text-xs text-purple-700 flex items-center">
                   <svg
                     className="w-4 h-4 mr-1"
                     fill="currentColor"

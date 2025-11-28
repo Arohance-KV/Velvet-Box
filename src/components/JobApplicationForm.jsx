@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormField from './FormField';
+import SuccessScreen from './SuccessScreen';
 import { 
   submitApplication, 
   selectApplicationLoading, 
@@ -161,17 +162,14 @@ const JobApplicationForm = ({ jobData }) => {
     const title = section.sectionTitle.toLowerCase();
     const description = section.sectionDescription?.toLowerCase() || '';
     
-    // Check for voice/audio keywords
     if (title.includes('voice') || title.includes('audio') || title.includes('recording') && !title.includes('video')) {
       return 'voice_recording';
     }
     
-    // Check for video keywords
     if (title.includes('video')) {
       return 'video_recording';
     }
     
-    // Check description as fallback
     if (description.includes('voice') || description.includes('audio') || description.includes('record yourself')) {
       return 'voice_recording';
     }
@@ -202,7 +200,6 @@ const JobApplicationForm = ({ jobData }) => {
       newErrors.phone = 'Phone is required';
     }
 
-    // Validate custom sections
     jobData.customSections?.forEach(section => {
       if (section.fields && section.fields.length > 0) {
         section.fields.forEach(field => {
@@ -268,7 +265,6 @@ const JobApplicationForm = ({ jobData }) => {
             responses.push(responseObj);
           });
         }
-        // FIXED: Handle sections without fields (voice/video recording sections)
         else if (mediaType) {
           const sectionFieldName = section.sectionTitle;
           const uploadedFile = uploadedFiles[sectionFieldName];
@@ -305,7 +301,6 @@ const JobApplicationForm = ({ jobData }) => {
       };
 
       console.log('Submitting application:', applicationData);
-
       await dispatch(submitApplication(applicationData)).unwrap();
 
     } catch (err) {
@@ -316,16 +311,6 @@ const JobApplicationForm = ({ jobData }) => {
     }
   };
 
-  useEffect(() => {
-    if (submitStatus === 'succeeded') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      setTimeout(() => {
-        dispatch(resetSubmitStatus());
-      }, 5000);
-    }
-  }, [submitStatus, dispatch]);
-
-  // Helper function to get file icon based on MIME type
   const getFileIcon = (mimeType) => {
     if (mimeType?.includes('pdf')) {
       return (
@@ -355,7 +340,6 @@ const JobApplicationForm = ({ jobData }) => {
     );
   };
 
-  // Render media files section
   const renderMediaFiles = () => {
     if (!jobData.media || jobData.media.length === 0) return null;
 
@@ -364,8 +348,8 @@ const JobApplicationForm = ({ jobData }) => {
       .sort((a, b) => (a.order || 0) - (b.order || 0));
 
     return (
-      <div className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8">
-        <h3 className="text-2xl font-extrabold text-gray-900 mb-3 border-b-2 border-purple-600 pb-3">
+      <div className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8 mb-8">
+        <h3 className="text-2xl font-extrabold text-purple-900 mb-3 border-b-2 border-orange-400 pb-3">
           📎 Attachments & Resources
         </h3>
         <p className="text-gray-600 mb-6">Review the following materials related to this position</p>
@@ -374,7 +358,7 @@ const JobApplicationForm = ({ jobData }) => {
           {sortedMedia.map((media, index) => (
             <div
               key={media._id || index}
-              className="bg-white border-2 border-gray-200 rounded-xl p-5 hover:border-purple-400 hover:shadow-lg transition-all duration-200 group"
+              className="bg-white border-2 border-purple-100 rounded-xl p-5 hover:border-purple-400 hover:shadow-lg transition-all duration-200 group"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4 flex-1">
@@ -409,7 +393,7 @@ const JobApplicationForm = ({ jobData }) => {
                   href={media.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ml-4 shrink-0 bg-linear-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center space-x-2 shadow-md group-hover:shadow-lg"
+                  className="ml-4 shrink-0 bg-linear-to-r from-purple-700 to-orange-400 hover:from-purple-800 hover:to-orange-500 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center space-x-2 shadow-md group-hover:shadow-lg"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -434,19 +418,18 @@ const JobApplicationForm = ({ jobData }) => {
     return sortedSections.map((section, sectionIndex) => {
       const mediaType = getSectionMediaType(section);
       
-      // FIXED: Render sections with empty fields array that have media type (voice/video)
       if ((!section.fields || section.fields.length === 0) && mediaType) {
         const syntheticField = {
           fieldName: section.sectionTitle,
           fieldLabel: section.sectionTitle,
           fieldType: mediaType,
-          isRequired: false, // Optional fields
+          isRequired: false,
           placeholder: section.sectionDescription || `Record your ${mediaType.replace('_', ' ')}`
         };
 
         return (
-          <div key={section._id || sectionIndex} className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
-            <h3 className="text-2xl font-extrabold text-gray-900 mb-3">{section.sectionTitle}</h3>
+          <div key={section._id || sectionIndex} className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
+            <h3 className="text-2xl font-extrabold text-purple-900 mb-3">{section.sectionTitle}</h3>
             {section.sectionDescription && (
               <p className="text-gray-600 mb-6 leading-relaxed">{section.sectionDescription}</p>
             )}
@@ -463,12 +446,10 @@ const JobApplicationForm = ({ jobData }) => {
         );
       }
 
-      // FIXED: Also render sections with empty fields array that DON'T have media type
       if ((!section.fields || section.fields.length === 0) && !mediaType) {
-        // This is a section with no fields - just display it as informational
         return (
-          <div key={section._id || sectionIndex} className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
-            <h3 className="text-2xl font-extrabold text-gray-900 mb-3">{section.sectionTitle}</h3>
+          <div key={section._id || sectionIndex} className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
+            <h3 className="text-2xl font-extrabold text-purple-900 mb-3">{section.sectionTitle}</h3>
             {section.sectionDescription && (
               <p className="text-gray-600 leading-relaxed">{section.sectionDescription}</p>
             )}
@@ -476,10 +457,9 @@ const JobApplicationForm = ({ jobData }) => {
         );
       }
 
-      // Render sections with fields
       return (
-        <div key={section._id || sectionIndex} className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
-          <h3 className="text-2xl font-extrabold text-gray-900 mb-3">{section.sectionTitle}</h3>
+        <div key={section._id || sectionIndex} className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl">
+          <h3 className="text-2xl font-extrabold text-purple-900 mb-3">{section.sectionTitle}</h3>
           {section.sectionDescription && (
             <p className="text-gray-600 mb-6 leading-relaxed">{section.sectionDescription}</p>
           )}
@@ -503,54 +483,12 @@ const JobApplicationForm = ({ jobData }) => {
     });
   };
 
-  // Success Screen
-  if (submitStatus === 'succeeded' && submittedApplication) {
-    return (
-      <div className="min-h-screen bg-linear-to-br from-green-50 via-blue-50 to-indigo-50 py-16 px-4">
-        <div className="max-w-3xl mx-auto">
-          <div className="bg-white rounded-3xl shadow-2xl border-2 border-green-100 p-10 text-center transform transition-all duration-300">
-            <div className="mb-6 flex justify-center">
-              <div className="bg-green-100 rounded-full p-4">
-                <svg className="h-20 w-20 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-            </div>
-            <h2 className="text-4xl font-extrabold text-gray-900 mb-4">Application Submitted!</h2>
-            <p className="text-lg text-gray-700 mb-8 leading-relaxed">
-              Thank you for applying to <span className="font-semibold text-blue-600">{jobData.jobTitle}</span>. We have received your application and will review it shortly.
-            </p>
-            <div className="bg-linear-to-br from-gray-50 to-blue-50 rounded-2xl p-6 mb-8 border border-gray-200">
-              <div className="space-y-3">
-                <p className="text-sm text-gray-700">
-                  <span className="font-semibold text-gray-900">Application ID:</span> 
-                  <span className="ml-2 font-mono text-blue-600">{submittedApplication._id}</span>
-                </p>
-                <p className="text-sm text-gray-700">
-                  <span className="font-semibold text-gray-900">Submitted on:</span> 
-                  <span className="ml-2">{new Date(submittedApplication.submittedAt).toLocaleString()}</span>
-                </p>
-              </div>
-            </div>
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <p className="text-sm text-blue-800">
-                📧 A confirmation email has been sent to <span className="font-semibold">{formData.email}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Helper function to check if experience should be displayed
   const shouldDisplayExperience = () => {
     if (!jobData.experienceRequired) return false;
     const { min, max } = jobData.experienceRequired;
     return min > 0 || max > 0;
   };
 
-  // Helper function to check if salary should be displayed
   const shouldDisplaySalary = () => {
     if (!jobData.salary) return false;
     const { min, max } = jobData.salary;
@@ -558,44 +496,41 @@ const JobApplicationForm = ({ jobData }) => {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-indigo-50 via-white to-blue-50 py-16 px-4">
+    <div className="min-h-screen bg-white py-16 px-4">
       <div className="max-w-5xl mx-auto">
         {/* Job Header */}
-        <div className="bg-linear-to-br from-white via-blue-50 to-indigo-50 rounded-3xl shadow-2xl border border-blue-100 p-10 mb-10">
-          <div className="border-l-4 border-blue-600 pl-6">
-            <h1 className="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">{jobData.jobTitle}</h1>
+        <div className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-3xl shadow-2xl border border-purple-100 p-10 mb-10">
+          <div className="border-l-4 border-purple-700 pl-6">
+            <h1 className="text-4xl font-extrabold text-purple-900 mb-4 leading-tight">{jobData.jobTitle}</h1>
             <p className="text-lg text-gray-700 mb-6 leading-relaxed">{jobData.jobDescription}</p>
           </div>
           
-          {/* Display role, qualifications, tags, expiration date */}
+          {/* Rest of job details remain the same... */}
           <div className="mt-8 space-y-4">
-            {/* Role */}
             {jobData.role && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
-                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Role Level</span>
+              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
+                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">Role Level</span>
                 <p className="text-base text-gray-900 mt-2 font-medium capitalize">{jobData.role}</p>
               </div>
             )}
 
-            {/* Employment Type */}
             {jobData.employmentType && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
-                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Employment Type</span>
+              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
+                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">Employment Type</span>
                 <p className="text-base text-gray-900 mt-2 font-medium capitalize">
                   {jobData.employmentType.replace('_', ' ')}
                 </p>
               </div>
             )}
 
-            {/* Qualifications */}
             {jobData.qualifications && jobData.qualifications.length > 0 && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
-                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3 block">Required Qualifications</span>
+              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
+                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-3 block">Required Qualifications</span>
                 <div className="flex flex-wrap gap-2">
                   {jobData.qualifications.map((qual, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+                      className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium"
                     >
                       {qual}
                     </span>
@@ -604,15 +539,14 @@ const JobApplicationForm = ({ jobData }) => {
               </div>
             )}
 
-            {/* Tags/Skills */}
             {jobData.tags && jobData.tags.length > 0 && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
-                <span className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-3 block">Required Skills</span>
+              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
+                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-3 block">Required Skills</span>
                 <div className="flex flex-wrap gap-2">
                   {jobData.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium"
+                      className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium"
                     >
                       #{tag}
                     </span>
@@ -621,9 +555,8 @@ const JobApplicationForm = ({ jobData }) => {
               </div>
             )}
 
-            {/* Expiration Date */}
             {jobData.expiresAt && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
+              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
                 <span className="text-xs font-bold text-red-600 uppercase tracking-wider">Application Deadline</span>
                 <p className="text-base text-gray-900 mt-2 font-medium">
                   {new Date(jobData.expiresAt).toLocaleDateString('en-US', {
@@ -638,12 +571,11 @@ const JobApplicationForm = ({ jobData }) => {
             )}
           </div>
           
-          {/* Only render grid if there's at least one item to display */}
           {(shouldDisplayExperience() || jobData.location || shouldDisplaySalary()) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
               {shouldDisplayExperience() && (
-                <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
-                  <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Experience Required</span>
+                <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
+                  <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">Experience Required</span>
                   <p className="text-base text-gray-900 mt-2 font-medium">
                     {jobData.experienceRequired.min} - {jobData.experienceRequired.max} {jobData.experienceRequired.unit}
                   </p>
@@ -651,8 +583,8 @@ const JobApplicationForm = ({ jobData }) => {
               )}
 
               {jobData.location && (
-                <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100">
-                  <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Location</span>
+                <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
+                  <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">Location</span>
                   <p className="text-base text-gray-900 mt-2 font-medium">
                     {jobData.location.city}, {jobData.location.state}, {jobData.location.country}
                     {jobData.location.isRemote && <span className="ml-2 text-green-600">🌐 Remote</span>}
@@ -661,8 +593,8 @@ const JobApplicationForm = ({ jobData }) => {
               )}
 
               {shouldDisplaySalary() && (
-                <div className="bg-white rounded-xl p-5 shadow-md border border-gray-100 md:col-span-2">
-                  <span className="text-xs font-bold text-blue-600 uppercase tracking-wider">Salary Range</span>
+                <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100 md:col-span-2">
+                  <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">Salary Range</span>
                   <p className="text-base text-gray-900 mt-2 font-medium">
                     {jobData.salary.currency} {jobData.salary.min.toLocaleString()} - {jobData.salary.max.toLocaleString()} / {jobData.salary.period}
                     {jobData.salary.isNegotiable && <span className="ml-2 text-green-600">(Negotiable)</span>}
@@ -673,14 +605,11 @@ const JobApplicationForm = ({ jobData }) => {
           )}
         </div>
 
-        {/* Media Files Section */}
         {renderMediaFiles()}
 
-        {/* Application Form */}
         <form onSubmit={handleSubmit} className="space-y-8">
-          {/* Candidate Information */}
-          <div className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8">
-            <h3 className="text-2xl font-extrabold text-gray-900 mb-6 border-b-2 border-blue-600 pb-3">Candidate Information</h3>
+          <div className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8">
+            <h3 className="text-2xl font-extrabold text-purple-900 mb-6 border-b-2 border-orange-400 pb-3">Candidate Information</h3>
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-bold text-gray-800 mb-2">
@@ -690,7 +619,7 @@ const JobApplicationForm = ({ jobData }) => {
                   type="text"
                   value={formData.name}
                   onChange={(e) => handleFieldChange('name', e.target.value)}
-                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all placeholder-gray-400 ${
+                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all placeholder-gray-400 ${
                     errors.name ? 'border-red-400 ring-2 ring-red-200' : 'border-gray-300'
                   }`}
                   placeholder="Enter your full name"
@@ -713,7 +642,7 @@ const JobApplicationForm = ({ jobData }) => {
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleFieldChange('email', e.target.value)}
-                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all placeholder-gray-400 ${
+                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all placeholder-gray-400 ${
                     errors.email ? 'border-red-400 ring-2 ring-red-200' : 'border-gray-300'
                   }`}
                   placeholder="your.email@example.com"
@@ -736,7 +665,7 @@ const JobApplicationForm = ({ jobData }) => {
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => handleFieldChange('phone', e.target.value)}
-                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all placeholder-gray-400 ${
+                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all placeholder-gray-400 ${
                     errors.phone ? 'border-red-400 ring-2 ring-red-200' : 'border-gray-300'
                   }`}
                   placeholder="+91 98765 43210"
@@ -753,10 +682,8 @@ const JobApplicationForm = ({ jobData }) => {
             </div>
           </div>
 
-          {/* Custom Sections */}
           {renderCustomSections()}
 
-          {/* Error Message */}
           {(error || errors.submit) && (
             <div className="bg-linear-to-r from-red-50 to-red-100 border-2 border-red-300 rounded-2xl p-6 shadow-lg">
               <div className="flex items-start">
@@ -775,15 +702,14 @@ const JobApplicationForm = ({ jobData }) => {
             </div>
           )}
 
-          {/* Submit Button */}
-          <div className="bg-linear-to-br from-white via-gray-50 to-white rounded-2xl shadow-xl border border-gray-100 p-8">
+          <div className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8">
             <button
               type="submit"
               disabled={loading || isUploading}
               className={`w-full py-5 px-6 rounded-full font-bold text-lg text-white transition-all duration-200 flex items-center justify-center shadow-xl transform hover:scale-105 ${
                 loading || isUploading
                   ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700'
+                  : 'bg-linear-to-r from-purple-700 via-purple-800 to-orange-400 hover:from-purple-800 hover:via-purple-900 hover:to-orange-500'
               }`}
             >
               {isUploading ? (
