@@ -3,19 +3,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // Base URL
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-// Helper functions
-const getAuthToken = () => localStorage.getItem('accessToken');
 
 const getAuthHeaders = (isFormData = false) => {
-  const token = getAuthToken();
   const headers = {};
   
   if (!isFormData) {
     headers['Content-Type'] = 'application/json';
-  }
-  
-  if (token) {
-    headers['Authorization'] = `Bearer ${token}`;
   }
   
   return headers;
