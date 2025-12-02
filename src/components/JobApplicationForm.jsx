@@ -344,7 +344,8 @@ const JobApplicationForm = ({ jobData }) => {
     if (mimeType?.includes("pdf")) {
       return (
         <svg
-          className="w-6 h-6 text-red-500"
+          className="w-6 h-6"
+          style={{ color: '#A67390' }}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -359,7 +360,8 @@ const JobApplicationForm = ({ jobData }) => {
     if (mimeType?.includes("image")) {
       return (
         <svg
-          className="w-6 h-6 text-blue-500"
+          className="w-6 h-6"
+          style={{ color: '#592D4A' }}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -374,7 +376,8 @@ const JobApplicationForm = ({ jobData }) => {
     if (mimeType?.includes("video")) {
       return (
         <svg
-          className="w-6 h-6 text-purple-500"
+          className="w-6 h-6"
+          style={{ color: '#B7966B' }}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -384,7 +387,8 @@ const JobApplicationForm = ({ jobData }) => {
     }
     return (
       <svg
-        className="w-6 h-6 text-gray-500"
+        className="w-6 h-6"
+        style={{ color: '#666' }}
         fill="currentColor"
         viewBox="0 0 20 20"
       >
@@ -405,11 +409,30 @@ const JobApplicationForm = ({ jobData }) => {
       .sort((a, b) => (a.order || 0) - (b.order || 0));
 
     return (
-      <div className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8 mb-8">
-        <h3 className="text-2xl font-extrabold text-purple-900 mb-3 border-b-2 border-orange-400 pb-3">
+      <div style={{
+        background: 'linear-gradient(135deg, #F0E6ED 0%, #FBF9F6 100%)',
+        borderRadius: 20,
+        boxShadow: '0 4px 20px rgba(89, 45, 74, 0.1)',
+        border: '1.5px solid #B7966B',
+        padding: 32,
+        marginBottom: 32
+      }}>
+        <h3 style={{
+          fontFamily: '"Playfair Display", "Lora", serif',
+          fontSize: '1.75rem',
+          fontWeight: 700,
+          color: '#592D4A',
+          marginBottom: 12,
+          borderBottom: '2px solid #B7966B',
+          paddingBottom: 12
+        }}>
           📎 Attachments & Resources
         </h3>
-        <p className="text-gray-600 mb-6">
+        <p style={{
+          fontFamily: '"Poppins", sans-serif',
+          color: '#666',
+          marginBottom: 24
+        }}>
           Review the following materials related to this position
         </p>
 
@@ -417,22 +440,53 @@ const JobApplicationForm = ({ jobData }) => {
           {sortedMedia.map((media, index) => (
             <div
               key={media._id || index}
-              className="bg-white border-2 border-purple-100 rounded-xl p-5 hover:border-purple-400 hover:shadow-lg transition-all duration-200 group"
+              className="transition-all duration-200"
+              style={{
+                background: '#fff',
+                border: '2px solid #E5D2C7',
+                borderRadius: 16,
+                padding: 20
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.border = '2px solid #A67390';
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(89, 45, 74, 0.12)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.border = '2px solid #E5D2C7';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4 flex-1">
                   <div className="shrink-0">{getFileIcon(media.mimeType)}</div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-base font-semibold text-gray-900 truncate">
+                    <p style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontSize: '1rem',
+                      fontWeight: 600,
+                      color: '#333',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}>
                       {media.filename || "Document"}
                     </p>
                     {media.caption && (
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p style={{
+                        fontFamily: '"Poppins", sans-serif',
+                        fontSize: '0.9rem',
+                        color: '#666',
+                        marginTop: 4
+                      }}>
                         {media.caption}
                       </p>
                     )}
-                    <div className="flex items-center space-x-3 mt-2 text-xs text-gray-500">
+                    <div className="flex items-center space-x-3 mt-2" style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontSize: '0.8rem',
+                      color: '#999'
+                    }}>
                       <span className="flex items-center">
                         <svg
                           className="w-4 h-4 mr-1"
@@ -460,7 +514,26 @@ const JobApplicationForm = ({ jobData }) => {
                   href={media.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ml-4 shrink-0 bg-linear-to-r from-purple-700 to-orange-400 hover:from-purple-800 hover:to-orange-500 text-white px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 flex items-center space-x-2 shadow-md group-hover:shadow-lg"
+                  className="ml-4 shrink-0 flex items-center space-x-2 transition-all duration-200"
+                  style={{
+                    background: '#592D4A',
+                    color: '#FBF9F6',
+                    padding: '10px 20px',
+                    borderRadius: 10,
+                    fontFamily: '"Lora", serif',
+                    fontWeight: 600,
+                    fontSize: '0.9rem',
+                    boxShadow: '0 2px 8px rgba(89, 45, 74, 0.15)',
+                    textDecoration: 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#432235';
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(89, 45, 74, 0.25)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = '#592D4A';
+                    e.currentTarget.style.boxShadow = '0 2px 8px rgba(89, 45, 74, 0.15)';
+                  }}
                 >
                   <svg
                     className="w-4 h-4"
@@ -509,13 +582,32 @@ const JobApplicationForm = ({ jobData }) => {
         return (
           <div
             key={section._id || sectionIndex}
-            className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl"
+            className="transform transition-all duration-200"
+            style={{
+              background: 'linear-gradient(135deg, #F0E6ED 0%, #FBF9F6 100%)',
+              borderRadius: 20,
+              boxShadow: '0 4px 20px rgba(89, 45, 74, 0.1)',
+              border: '1.5px solid #B7966B',
+              padding: 32,
+              marginBottom: 32
+            }}
           >
-            <h3 className="text-2xl font-extrabold text-purple-900 mb-3">
+            <h3 style={{
+              fontFamily: '"Playfair Display", "Lora", serif',
+              fontSize: '1.75rem',
+              fontWeight: 700,
+              color: '#592D4A',
+              marginBottom: 12
+            }}>
               {section.sectionTitle}
             </h3>
             {section.sectionDescription && (
-              <p className="text-gray-600 mb-6 leading-relaxed">
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                color: '#666',
+                marginBottom: 24,
+                lineHeight: 1.6
+              }}>
                 {section.sectionDescription}
               </p>
             )}
@@ -538,13 +630,31 @@ const JobApplicationForm = ({ jobData }) => {
         return (
           <div
             key={section._id || sectionIndex}
-            className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl"
+            className="transform transition-all duration-200"
+            style={{
+              background: 'linear-gradient(135deg, #F0E6ED 0%, #FBF9F6 100%)',
+              borderRadius: 20,
+              boxShadow: '0 4px 20px rgba(89, 45, 74, 0.1)',
+              border: '1.5px solid #B7966B',
+              padding: 32,
+              marginBottom: 32
+            }}
           >
-            <h3 className="text-2xl font-extrabold text-purple-900 mb-3">
+            <h3 style={{
+              fontFamily: '"Playfair Display", "Lora", serif',
+              fontSize: '1.75rem',
+              fontWeight: 700,
+              color: '#592D4A',
+              marginBottom: 12
+            }}>
               {section.sectionTitle}
             </h3>
             {section.sectionDescription && (
-              <p className="text-gray-600 leading-relaxed">
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                color: '#666',
+                lineHeight: 1.6
+              }}>
                 {section.sectionDescription}
               </p>
             )}
@@ -555,13 +665,32 @@ const JobApplicationForm = ({ jobData }) => {
       return (
         <div
           key={section._id || sectionIndex}
-          className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8 mb-8 transform transition-all duration-200 hover:shadow-2xl"
+          className="transform transition-all duration-200"
+          style={{
+            background: 'linear-gradient(135deg, #F0E6ED 0%, #FBF9F6 100%)',
+            borderRadius: 20,
+            boxShadow: '0 4px 20px rgba(89, 45, 74, 0.1)',
+            border: '1.5px solid #B7966B',
+            padding: 32,
+            marginBottom: 32
+          }}
         >
-          <h3 className="text-2xl font-extrabold text-purple-900 mb-3">
+          <h3 style={{
+            fontFamily: '"Playfair Display", "Lora", serif',
+            fontSize: '1.75rem',
+            fontWeight: 700,
+            color: '#592D4A',
+            marginBottom: 12
+          }}>
             {section.sectionTitle}
           </h3>
           {section.sectionDescription && (
-            <p className="text-gray-600 mb-6 leading-relaxed">
+            <p style={{
+              fontFamily: '"Poppins", sans-serif',
+              color: '#666',
+              marginBottom: 24,
+              lineHeight: 1.6
+            }}>
               {section.sectionDescription}
             </p>
           )}
@@ -600,53 +729,143 @@ const JobApplicationForm = ({ jobData }) => {
   };
 
   return (
-    <div className="min-h-screen bg-white py-16 px-4">
+    <div className="min-h-screen py-16 px-4" style={{ background: '#FBF9F6' }}>
+      <style>
+        {`
+          @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Lora:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+        `}
+      </style>
       <div className="max-w-5xl mx-auto">
         {/* Job Header */}
-        <div className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-3xl shadow-2xl border border-purple-100 p-10 mb-10">
-          <div className="border-l-4 border-purple-700 pl-6">
-            <h1 className="text-4xl font-extrabold text-purple-900 mb-4 leading-tight">
+        <div style={{
+          background: 'linear-gradient(135deg, #F0E6ED 0%, #FBF9F6 100%)',
+          borderRadius: 24,
+          boxShadow: '0 8px 32px rgba(89, 45, 74, 0.12)',
+          border: '1.5px solid #B7966B', // Gold/Dust Accent Border
+          padding: 40,
+          marginBottom: 40
+        }}>
+          <div style={{
+            borderLeft: '4px solid #592D4A',
+            paddingLeft: 24
+          }}>
+            <h1 style={{
+              fontFamily: '"Playfair Display", "Lora", serif',
+              fontSize: '2.5rem',
+              fontWeight: 800,
+              color: '#592D4A',
+              marginBottom: 16,
+              lineHeight: 1.2
+            }}>
               {jobData.jobTitle}
             </h1>
-            <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+            <p style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontSize: '1.1rem',
+              color: '#333',
+              marginBottom: 24,
+              lineHeight: 1.6
+            }}>
               {jobData.jobDescription}
             </p>
           </div>
 
-          {/* Rest of job details remain the same... */}
           <div className="mt-8 space-y-4">
             {jobData.role && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
-                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">
+              <div style={{
+                background: '#fff',
+                borderRadius: 16,
+                padding: 20,
+                boxShadow: '0 2px 8px rgba(89, 45, 74, 0.06)',
+                border: '1px solid #E5D2C7'
+              }}>
+                <span style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#592D4A',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Role Level
                 </span>
-                <p className="text-base text-gray-900 mt-2 font-medium capitalize">
+                <p style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '1rem',
+                  color: '#333',
+                  marginTop: 8,
+                  fontWeight: 500,
+                  textTransform: 'capitalize'
+                }}>
                   {jobData.role}
                 </p>
               </div>
             )}
 
             {jobData.employmentType && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
-                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">
+              <div style={{
+                background: '#fff',
+                borderRadius: 16,
+                padding: 20,
+                boxShadow: '0 2px 8px rgba(89, 45, 74, 0.06)',
+                border: '1px solid #E5D2C7'
+              }}>
+                <span style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#592D4A',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Employment Type
                 </span>
-                <p className="text-base text-gray-900 mt-2 font-medium capitalize">
+                <p style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '1rem',
+                  color: '#333',
+                  marginTop: 8,
+                  fontWeight: 500,
+                  textTransform: 'capitalize'
+                }}>
                   {jobData.employmentType.replace("_", " ")}
                 </p>
               </div>
             )}
 
             {jobData.qualifications && jobData.qualifications.length > 0 && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
-                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-3 block">
+              <div style={{
+                background: '#fff',
+                borderRadius: 16,
+                padding: 20,
+                boxShadow: '0 2px 8px rgba(89, 45, 74, 0.06)',
+                border: '1px solid #E5D2C7'
+              }}>
+                <span style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#592D4A',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: 12,
+                  display: 'block'
+                }}>
                   Required Qualifications
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {jobData.qualifications.map((qual, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium"
+                      style={{
+                        padding: '4px 12px',
+                        background: '#F0E6ED',
+                        color: '#592D4A',
+                        borderRadius: 999,
+                        fontSize: '0.9rem',
+                        fontFamily: '"Poppins", sans-serif',
+                        fontWeight: 500
+                      }}
                     >
                       {qual}
                     </span>
@@ -656,15 +875,38 @@ const JobApplicationForm = ({ jobData }) => {
             )}
 
             {jobData.tags && jobData.tags.length > 0 && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
-                <span className="text-xs font-bold text-purple-700 uppercase tracking-wider mb-3 block">
+              <div style={{
+                background: '#fff',
+                borderRadius: 16,
+                padding: 20,
+                boxShadow: '0 2px 8px rgba(89, 45, 74, 0.06)',
+                border: '1px solid #E5D2C7'
+              }}>
+                <span style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#592D4A',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                  marginBottom: 12,
+                  display: 'block'
+                }}>
                   Required Skills
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {jobData.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium"
+                      style={{
+                        padding: '4px 12px',
+                        background: '#FFF4E6',
+                        color: '#B7966B',
+                        borderRadius: 999,
+                        fontSize: '0.9rem',
+                        fontFamily: '"Poppins", sans-serif',
+                        fontWeight: 500
+                      }}
                     >
                       #{tag}
                     </span>
@@ -674,11 +916,30 @@ const JobApplicationForm = ({ jobData }) => {
             )}
 
             {jobData.expiresAt && (
-              <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
-                <span className="text-xs font-bold text-red-600 uppercase tracking-wider">
+              <div style={{
+                background: '#fff',
+                borderRadius: 16,
+                padding: 20,
+                boxShadow: '0 2px 8px rgba(89, 45, 74, 0.06)',
+                border: '1px solid #E5D2C7'
+              }}>
+                <span style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#A67390',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em'
+                }}>
                   Application Deadline
                 </span>
-                <p className="text-base text-gray-900 mt-2 font-medium">
+                <p style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '1rem',
+                  color: '#333',
+                  marginTop: 8,
+                  fontWeight: 500
+                }}>
                   {new Date(jobData.expiresAt).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -696,11 +957,30 @@ const JobApplicationForm = ({ jobData }) => {
             shouldDisplaySalary()) && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
               {shouldDisplayExperience() && (
-                <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
-                  <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">
+                <div style={{
+                  background: '#fff',
+                  borderRadius: 16,
+                  padding: 20,
+                  boxShadow: '0 2px 8px rgba(89, 45, 74, 0.06)',
+                  border: '1px solid #E5D2C7'
+                }}>
+                  <span style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: '#592D4A',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}>
                     Experience Required
                   </span>
-                  <p className="text-base text-gray-900 mt-2 font-medium">
+                  <p style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '1rem',
+                    color: '#333',
+                    marginTop: 8,
+                    fontWeight: 500
+                  }}>
                     {jobData.experienceRequired.min} -{" "}
                     {jobData.experienceRequired.max}{" "}
                     {jobData.experienceRequired.unit}
@@ -709,32 +989,70 @@ const JobApplicationForm = ({ jobData }) => {
               )}
 
               {jobData.location && (
-                <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100">
-                  <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">
+                <div style={{
+                  background: '#fff',
+                  borderRadius: 16,
+                  padding: 20,
+                  boxShadow: '0 2px 8px rgba(89, 45, 74, 0.06)',
+                  border: '1px solid #E5D2C7'
+                }}>
+                  <span style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: '#592D4A',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}>
                     Location
                   </span>
-                  <p className="text-base text-gray-900 mt-2 font-medium">
+                  <p style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '1rem',
+                    color: '#333',
+                    marginTop: 8,
+                    fontWeight: 500
+                  }}>
                     {jobData.location.city}, {jobData.location.state},{" "}
                     {jobData.location.country}
                     {jobData.location.isRemote && (
-                      <span className="ml-2 text-green-600">🌐 Remote</span>
+                      <span style={{ marginLeft: 8, color: '#22c55e' }}>🌐 Remote</span>
                     )}
                   </p>
                 </div>
               )}
 
               {shouldDisplaySalary() && (
-                <div className="bg-white rounded-xl p-5 shadow-md border border-purple-100 md:col-span-2">
-                  <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">
+                <div className="md:col-span-2" style={{
+                  background: '#fff',
+                  borderRadius: 16,
+                  padding: 20,
+                  boxShadow: '0 2px 8px rgba(89, 45, 74, 0.06)',
+                  border: '1px solid #E5D2C7'
+                }}>
+                  <span style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: '#592D4A',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}>
                     Salary Range
                   </span>
-                  <p className="text-base text-gray-900 mt-2 font-medium">
+                  <p style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '1rem',
+                    color: '#333',
+                    marginTop: 8,
+                    fontWeight: 500
+                  }}>
                     {jobData.salary.currency}{" "}
                     {jobData.salary.min.toLocaleString()} -{" "}
                     {jobData.salary.max.toLocaleString()} /{" "}
                     {jobData.salary.period}
                     {jobData.salary.isNegotiable && (
-                      <span className="ml-2 text-green-600">(Negotiable)</span>
+                      <span style={{ marginLeft: 8, color: '#22c55e' }}>(Negotiable)</span>
                     )}
                   </p>
                 </div>
@@ -746,28 +1064,66 @@ const JobApplicationForm = ({ jobData }) => {
         {renderMediaFiles()}
 
         <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8">
-            <h3 className="text-2xl font-extrabold text-purple-900 mb-6 border-b-2 border-orange-400 pb-3">
+          <div style={{
+            background: 'linear-gradient(135deg, #F0E6ED 0%, #FBF9F6 100%)',
+            borderRadius: 20,
+            boxShadow: '0 4px 20px rgba(89, 45, 74, 0.1)',
+            border: '1.5px solid #B7966B', // Gold/Dust Accent Border
+            padding: 32
+          }}>
+            <h3 style={{
+              fontFamily: '"Playfair Display", "Lora", serif',
+              fontSize: '1.75rem',
+              fontWeight: 700,
+              color: '#592D4A',
+              marginBottom: 24,
+              borderBottom: '2px solid #B7966B',
+              paddingBottom: 12
+            }}>
               Candidate Information
             </h3>
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-bold text-gray-800 mb-2">
-                  Full Name <span className="text-red-500">*</span>
+                <label style={{
+                  display: 'block',
+                  fontFamily: '"Playfair Display", "Lora", serif',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  color: '#333',
+                  marginBottom: 8
+                }}>
+                  Full Name <span style={{ color: '#A67390' }}>*</span>
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => handleFieldChange("name", e.target.value)}
-                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all placeholder-gray-400 ${
-                    errors.name
-                      ? "border-red-400 ring-2 ring-red-200"
-                      : "border-gray-300"
-                  }`}
+                  className="w-full"
                   placeholder="Enter your full name"
+                  style={{
+                    fontFamily: '"Poppins", "Inter", sans-serif',
+                    fontSize: '1.07rem',
+                    color: '#333',
+                    fontWeight: 500,
+                    border: 'none',
+                    borderBottom: errors.name ? '2px solid #A67390' : '2px solid #E5D2C7',
+                    background: '#fff',
+                    outline: 'none',
+                    padding: '13px 0 7px 0',
+                    transition: 'border-bottom 0.2s ease'
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottom = '2px solid #592D4A')}
+                  onBlur={(e) => (e.target.style.borderBottom = errors.name ? '2px solid #A67390' : '2px solid #E5D2C7')}
                 />
                 {errors.name && (
-                  <p className="mt-2 text-sm text-red-600 flex items-center">
+                  <p style={{
+                    marginTop: 8,
+                    fontSize: '0.9rem',
+                    color: '#A67390',
+                    fontFamily: '"Poppins", sans-serif',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}>
                     <svg
                       className="w-4 h-4 mr-1"
                       fill="currentColor"
@@ -785,22 +1141,46 @@ const JobApplicationForm = ({ jobData }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-gray-800 mb-2">
-                  Email Address <span className="text-red-500">*</span>
+                <label style={{
+                  display: 'block',
+                  fontFamily: '"Playfair Display", "Lora", serif',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  color: '#333',
+                  marginBottom: 8
+                }}>
+                  Email Address <span style={{ color: '#A67390' }}>*</span>
                 </label>
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => handleFieldChange("email", e.target.value)}
-                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all placeholder-gray-400 ${
-                    errors.email
-                      ? "border-red-400 ring-2 ring-red-200"
-                      : "border-gray-300"
-                  }`}
+                  className="w-full"
                   placeholder="your.email@example.com"
+                  style={{
+                    fontFamily: '"Poppins", "Inter", sans-serif',
+                    fontSize: '1.07rem',
+                    color: '#333',
+                    fontWeight: 500,
+                    border: 'none',
+                    borderBottom: errors.email ? '2px solid #A67390' : '2px solid #E5D2C7',
+                    background: '#fff',
+                    outline: 'none',
+                    padding: '13px 0 7px 0',
+                    transition: 'border-bottom 0.2s ease'
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottom = '2px solid #592D4A')}
+                  onBlur={(e) => (e.target.style.borderBottom = errors.email ? '2px solid #A67390' : '2px solid #E5D2C7')}
                 />
                 {errors.email && (
-                  <p className="mt-2 text-sm text-red-600 flex items-center">
+                  <p style={{
+                    marginTop: 8,
+                    fontSize: '0.9rem',
+                    color: '#A67390',
+                    fontFamily: '"Poppins", sans-serif',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}>
                     <svg
                       className="w-4 h-4 mr-1"
                       fill="currentColor"
@@ -818,22 +1198,46 @@ const JobApplicationForm = ({ jobData }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-gray-800 mb-2">
-                  Phone Number <span className="text-red-500">*</span>
+                <label style={{
+                  display: 'block',
+                  fontFamily: '"Playfair Display", "Lora", serif',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  color: '#333',
+                  marginBottom: 8
+                }}>
+                  Phone Number <span style={{ color: '#A67390' }}>*</span>
                 </label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => handleFieldChange("phone", e.target.value)}
-                  className={`mt-1 block w-full rounded-xl border bg-white px-4 py-4 text-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all placeholder-gray-400 ${
-                    errors.phone
-                      ? "border-red-400 ring-2 ring-red-200"
-                      : "border-gray-300"
-                  }`}
+                  className="w-full"
                   placeholder="+91 98765 43210"
+                  style={{
+                    fontFamily: '"Poppins", "Inter", sans-serif',
+                    fontSize: '1.07rem',
+                    color: '#333',
+                    fontWeight: 500,
+                    border: 'none',
+                    borderBottom: errors.phone ? '2px solid #A67390' : '2px solid #E5D2C7',
+                    background: '#fff',
+                    outline: 'none',
+                    padding: '13px 0 7px 0',
+                    transition: 'border-bottom 0.2s ease'
+                  }}
+                  onFocus={(e) => (e.target.style.borderBottom = '2px solid #592D4A')}
+                  onBlur={(e) => (e.target.style.borderBottom = errors.phone ? '2px solid #A67390' : '2px solid #E5D2C7')}
                 />
                 {errors.phone && (
-                  <p className="mt-2 text-sm text-red-600 flex items-center">
+                  <p style={{
+                    marginTop: 8,
+                    fontSize: '0.9rem',
+                    color: '#A67390',
+                    fontFamily: '"Poppins", sans-serif',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}>
                     <svg
                       className="w-4 h-4 mr-1"
                       fill="currentColor"
@@ -855,11 +1259,18 @@ const JobApplicationForm = ({ jobData }) => {
           {renderCustomSections()}
 
           {(error || errors.submit) && (
-            <div className="bg-linear-to-r from-red-50 to-red-100 border-2 border-red-300 rounded-2xl p-6 shadow-lg">
+            <div style={{
+              background: 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)',
+              border: '2px solid #f87171',
+              borderRadius: 20,
+              padding: 24,
+              boxShadow: '0 4px 12px rgba(239, 68, 68, 0.15)'
+            }}>
               <div className="flex items-start">
                 <div className="shrink-0">
                   <svg
-                    className="w-6 h-6 text-red-600"
+                    className="w-6 h-6"
+                    style={{ color: '#dc2626' }}
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -871,10 +1282,20 @@ const JobApplicationForm = ({ jobData }) => {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-bold text-red-800 mb-1">
+                  <h3 style={{
+                    fontFamily: '"Playfair Display", serif',
+                    fontSize: '0.95rem',
+                    fontWeight: 700,
+                    color: '#991b1b',
+                    marginBottom: 4
+                  }}>
                     Submission Error
                   </h3>
-                  <p className="text-sm text-red-700">
+                  <p style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '0.9rem',
+                    color: '#7f1d1d'
+                  }}>
                     {error?.message ||
                       errors.submit ||
                       "An error occurred. Please try again."}
@@ -884,15 +1305,43 @@ const JobApplicationForm = ({ jobData }) => {
             </div>
           )}
 
-          <div className="bg-linear-to-br from-purple-50 via-pink-50 to-orange-50 rounded-2xl shadow-xl border border-purple-100 p-8">
+          <div style={{
+            background: 'linear-gradient(135deg, #F0E6ED 0%, #FBF9F6 100%)',
+            borderRadius: 20,
+            boxShadow: '0 4px 20px rgba(89, 45, 74, 0.1)',
+            border: '1.5px solid #B7966B', // Gold/Dust Accent Border
+            padding: 32
+          }}>
             <button
               type="submit"
               disabled={loading || isUploading}
-              className={`w-full py-5 px-6 rounded-full font-bold text-lg text-white transition-all duration-200 flex items-center justify-center shadow-xl transform hover:scale-105 ${
-                loading || isUploading
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-linear-to-r from-purple-700 via-purple-800 to-orange-400 hover:from-purple-800 hover:via-purple-900 hover:to-orange-500"
-              }`}
+              className="w-full flex items-center justify-center transition-all duration-300 transform"
+              style={{
+                padding: '20px 24px',
+                borderRadius: 999,
+                fontFamily: '"Lora", serif',
+                fontWeight: 700,
+                fontSize: '1.15rem',
+                color: '#FBF9F6',
+                background: loading || isUploading ? '#9ca3af' : '#592D4A',
+                boxShadow: loading || isUploading ? 'none' : '0 8px 24px rgba(89, 45, 74, 0.18)',
+                border: 'none',
+                cursor: loading || isUploading ? 'not-allowed' : 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                if (!loading && !isUploading) {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #A67390 0%, #592D4A 100%)';
+                  e.currentTarget.style.boxShadow = '0 12px 32px rgba(89, 45, 74, 0.28)';
+                  e.currentTarget.style.transform = 'scale(1.02)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading && !isUploading) {
+                  e.currentTarget.style.background = '#592D4A';
+                  e.currentTarget.style.boxShadow = '0 8px 24px rgba(89, 45, 74, 0.18)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }
+              }}
             >
               {isUploading ? (
                 <>
@@ -959,7 +1408,13 @@ const JobApplicationForm = ({ jobData }) => {
                 </>
               )}
             </button>
-            <p className="text-center text-xs text-gray-500 mt-4">
+            <p style={{
+              textAlign: 'center',
+              fontFamily: '"Poppins", sans-serif',
+              fontSize: '0.8rem',
+              color: '#999',
+              marginTop: 16
+            }}>
               By submitting this application, you agree to our terms and
               conditions
             </p>

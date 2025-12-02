@@ -181,12 +181,6 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
       .padStart(2, "0")}`;
   };
 
-  const baseInputClasses =
-    "mt-1 block w-full rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all placeholder-gray-400 text-lg px-4 py-4";
-  const inputClasses = error
-    ? `${baseInputClasses} border-red-400 ring-2 ring-red-200 text-gray-900 bg-white`
-    : `${baseInputClasses} border-gray-300 text-gray-900 bg-white`;
-
   const renderField = () => {
     switch (field.fieldType) {
       case "text":
@@ -198,8 +192,22 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
             value={value || ""}
             onChange={handleChange}
             placeholder={field.placeholder}
-            className={inputClasses}
+            className="w-full"
             required={field.isRequired}
+            style={{
+              fontFamily: '"Poppins", "Inter", sans-serif',
+              fontSize: '1.07rem',
+              color: '#333333',
+              fontWeight: 500,
+              border: 'none',
+              borderBottom: error ? '2px solid #A67390' : '2px solid #E5D2C7',
+              background: '#fff',
+              outline: 'none',
+              padding: '13px 0 7px 0',
+              transition: 'border-bottom 0.2s ease'
+            }}
+            onFocus={(e) => (e.target.style.borderBottom = '2px solid #592D4A')}
+            onBlur={(e) => (e.target.style.borderBottom = error ? '2px solid #A67390' : '2px solid #E5D2C7')}
           />
         );
 
@@ -210,10 +218,24 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
             value={value || ""}
             onChange={handleChange}
             placeholder={field.placeholder}
-            className={inputClasses}
+            className="w-full"
             required={field.isRequired}
             min={field.validation?.min}
             max={field.validation?.max}
+            style={{
+              fontFamily: '"Poppins", "Inter", sans-serif',
+              fontSize: '1.07rem',
+              color: '#333333',
+              fontWeight: 500,
+              border: 'none',
+              borderBottom: error ? '2px solid #A67390' : '2px solid #E5D2C7',
+              background: '#fff',
+              outline: 'none',
+              padding: '13px 0 7px 0',
+              transition: 'border-bottom 0.2s ease'
+            }}
+            onFocus={(e) => (e.target.style.borderBottom = '2px solid #592D4A')}
+            onBlur={(e) => (e.target.style.borderBottom = error ? '2px solid #A67390' : '2px solid #E5D2C7')}
           />
         );
 
@@ -224,10 +246,25 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
             onChange={handleChange}
             placeholder={field.placeholder}
             rows={5}
-            className={inputClasses}
+            className="w-full"
             required={field.isRequired}
             minLength={field.validation?.minLength}
             maxLength={field.validation?.maxLength}
+            style={{
+              fontFamily: '"Poppins", "Inter", sans-serif',
+              fontSize: '1.07rem',
+              color: '#333333',
+              fontWeight: 400,
+              border: 'none',
+              borderBottom: error ? '2px solid #A67390' : '2px solid #E5D2C7',
+              background: '#fff',
+              outline: 'none',
+              padding: '13px 0 7px 0',
+              transition: 'border-bottom 0.2s ease',
+              resize: 'vertical'
+            }}
+            onFocus={(e) => (e.target.style.borderBottom = '2px solid #592D4A')}
+            onBlur={(e) => (e.target.style.borderBottom = error ? '2px solid #A67390' : '2px solid #E5D2C7')}
           />
         );
 
@@ -236,8 +273,19 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
           <select
             value={value || ""}
             onChange={handleChange}
-            className={inputClasses}
+            className="w-full"
             required={field.isRequired}
+            style={{
+              fontFamily: '"Poppins", "Inter", sans-serif',
+              fontSize: '1.07rem',
+              color: '#333333',
+              fontWeight: 500,
+              border: 'none',
+              borderBottom: error ? '2px solid #A67390' : '2px solid #E5D2C7',
+              background: '#fff',
+              outline: 'none',
+              padding: '13px 0 7px 0'
+            }}
           >
             <option value="">Select an option</option>
             {field.options?.map((option, index) => (
@@ -251,8 +299,21 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
       case "multi_select":
         return (
           <div className="space-y-3">
-            <div className="bg-linear-to-br from-purple-50 to-orange-50 border-2 border-purple-200 rounded-xl p-4">
-              <p className="text-sm font-semibold text-purple-900 mb-3 flex items-center">
+            <div style={{
+              background: 'linear-gradient(135deg, #F9F3F6 0%, #FFFFFF 100%)', // Lighter gradient
+              border: '2px solid #A67390', // Elegant Mauve border
+              borderRadius: 16,
+              padding: 18
+            }}>
+              <p style={{
+                fontFamily: '"Playfair Display", "Lora", serif',
+                fontSize: '0.95rem',
+                fontWeight: 600,
+                color: '#592D4A',
+                marginBottom: 12,
+                display: 'flex',
+                alignItems: 'center'
+              }}>
                 <svg
                   className="w-4 h-4 mr-2"
                   fill="currentColor"
@@ -270,7 +331,19 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 {field.options?.map((option, index) => (
                   <label
                     key={index}
-                    className="flex items-center space-x-3 p-3 hover:bg-white rounded-lg cursor-pointer transition-all border-2 border-transparent hover:border-purple-300 bg-white/50"
+                    className="flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all"
+                    style={{
+                      background: '#fff',
+                      border: '2px solid transparent'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.border = '2px solid #A67390';
+                      e.currentTarget.style.background = '#FBF9F6';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.border = '2px solid transparent';
+                      e.currentTarget.style.background = '#fff';
+                    }}
                   >
                     <input
                       type="checkbox"
@@ -296,17 +369,34 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                           );
                         }
                       }}
-                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer"
+                      className="w-5 h-5 cursor-pointer"
+                      style={{
+                        accentColor: '#592D4A'
+                      }}
                     />
-                    <span className="text-base font-medium text-gray-800">
+                    <span style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontSize: '1rem',
+                      fontWeight: 500,
+                      color: '#333333'
+                    }}>
                       {option.label}
                     </span>
                   </label>
                 ))}
               </div>
               {Array.isArray(value) && value.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-purple-200">
-                  <p className="text-xs font-semibold text-purple-700">
+                <div style={{
+                  marginTop: 12,
+                  paddingTop: 12,
+                  borderTop: '1px solid #B7966B'
+                }}>
+                  <p style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    color: '#592D4A'
+                  }}>
                     Selected: {value.length} option
                     {value.length !== 1 ? "s" : ""}
                   </p>
@@ -314,7 +404,13 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
               )}
             </div>
             {field.isRequired && (!value || value.length === 0) && (
-              <p className="text-xs text-gray-500 flex items-center">
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontSize: '0.85rem',
+                color: '#A67390',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
                 <svg
                   className="w-3 h-3 mr-1"
                   fill="currentColor"
@@ -335,12 +431,29 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
       case "checkbox":
         return (
           <div className="space-y-3">
-            <div className="bg-linear-to-br from-purple-50 to-orange-50 border-2 border-purple-200 rounded-xl p-4">
+            <div style={{
+              background: 'linear-gradient(135deg, #F9F3F6 0%, #FFFFFF 100%)', // Lighter gradient
+              border: '2px solid #A67390', // Elegant Mauve border
+              borderRadius: 16,
+              padding: 18
+            }}>
               <div className="space-y-2">
                 {field.options?.map((option, index) => (
                   <label
                     key={index}
-                    className="flex items-center space-x-3 p-3 hover:bg-white rounded-lg cursor-pointer transition-all border-2 border-transparent hover:border-purple-300 bg-white/50"
+                    className="flex items-center space-x-3 p-3 rounded-lg cursor-pointer transition-all"
+                    style={{
+                      background: '#fff',
+                      border: '2px solid transparent'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.border = '2px solid #A67390';
+                      e.currentTarget.style.background = '#FBF9F6';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.border = '2px solid transparent';
+                      e.currentTarget.style.background = '#fff';
+                    }}
                   >
                     <input
                       type="checkbox"
@@ -366,17 +479,34 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                           );
                         }
                       }}
-                      className="w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500 focus:ring-2 cursor-pointer"
+                      className="w-5 h-5 cursor-pointer"
+                      style={{
+                        accentColor: '#592D4A'
+                      }}
                     />
-                    <span className="text-base font-medium text-gray-800">
+                    <span style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontSize: '1rem',
+                      fontWeight: 500,
+                      color: '#333333'
+                    }}>
                       {option.value}
                     </span>
                   </label>
                 ))}
               </div>
               {Array.isArray(value) && value.length > 0 && (
-                <div className="mt-3 pt-3 border-t border-purple-200">
-                  <p className="text-xs font-semibold text-purple-700">
+                <div style={{
+                  marginTop: 12,
+                  paddingTop: 12,
+                  borderTop: '1px solid #B7966B'
+                }}>
+                  <p style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    color: '#592D4A'
+                  }}>
                     Selected: {value.length} option
                     {value.length !== 1 ? "s" : ""}
                   </p>
@@ -384,7 +514,13 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
               )}
             </div>
             {field.isRequired && (!value || value.length === 0) && (
-              <p className="text-xs text-gray-500 flex items-center">
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontSize: '0.85rem',
+                color: '#A67390',
+                display: 'flex',
+                alignItems: 'center'
+              }}>
                 <svg
                   className="w-3 h-3 mr-1"
                   fill="currentColor"
@@ -406,11 +542,22 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
         return (
           <div className="space-y-4">
             {!recordedAudio ? (
-              <div className="border-3 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-purple-400 hover:bg-purple-50/30 transition-all">
+              <div style={{
+                border: '3px dashed #B7966B',
+                borderRadius: 20,
+                padding: 32,
+                textAlign: 'center',
+                background: '#FBF9F6',
+                transition: 'all 0.3s ease'
+              }}>
                 {!isRecording ? (
                   <div className="space-y-4">
                     <div className="flex justify-center">
-                      <div className="bg-linear-to-br from-purple-700 to-orange-400 p-4 rounded-full">
+                      <div style={{
+                        background: 'linear-gradient(135deg, #592D4A 0%, #A67390 100%)',
+                        padding: 16,
+                        borderRadius: '50%'
+                      }}>
                         <svg
                           className="w-10 h-10 text-white"
                           fill="currentColor"
@@ -427,7 +574,27 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                     <button
                       type="button"
                       onClick={startAudioRecording}
-                      className="inline-flex items-center px-8 py-4 bg-linear-to-r from-purple-700 to-orange-400 text-white rounded-full hover:from-purple-800 hover:to-orange-500 transition-all duration-200 shadow-xl font-bold text-lg transform hover:scale-105"
+                      className="inline-flex items-center px-8 py-4 rounded-full transform transition-all duration-300"
+                      style={{
+                        background: '#592D4A',
+                        color: '#FBF9F6',
+                        fontFamily: '"Lora", serif',
+                        fontWeight: 700,
+                        fontSize: '1.1rem',
+                        boxShadow: '0 6px 20px rgba(89, 45, 74, 0.15)',
+                        border: 'none',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = '#432235';
+                        e.currentTarget.style.boxShadow = '0 8px 28px rgba(89, 45, 74, 0.25)';
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = '#592D4A';
+                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(89, 45, 74, 0.15)';
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}
                     >
                       <svg
                         className="w-6 h-6 mr-2"
@@ -442,7 +609,12 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                       </svg>
                       Start Voice Recording
                     </button>
-                    <p className="text-sm text-gray-600 font-medium">
+                    <p style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontSize: '0.95rem',
+                      color: '#333333',
+                      fontWeight: 500
+                    }}>
                       {field.placeholder ||
                         "Click to start recording your voice"}
                     </p>
@@ -454,13 +626,29 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-5 w-5 bg-red-500"></span>
                       </span>
-                      <span className="text-3xl font-mono font-extrabold text-red-600">
+                      <span style={{
+                        fontFamily: 'monospace',
+                        fontSize: '2rem',
+                        fontWeight: 800,
+                        color: '#dc2626'
+                      }}>
                         {formatTime(recordingTime)}
                       </span>
                     </div>
                     <div className="flex justify-center">
-                      <div className="bg-red-100 px-6 py-2 rounded-full">
-                        <p className="text-sm text-red-700 font-bold flex items-center">
+                      <div style={{
+                        background: '#fee2e2',
+                        padding: '8px 24px',
+                        borderRadius: 999
+                      }}>
+                        <p style={{
+                          fontFamily: '"Poppins", sans-serif',
+                          fontSize: '0.9rem',
+                          color: '#991b1b',
+                          fontWeight: 700,
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}>
                           <span className="animate-pulse mr-2">●</span>
                           Recording in progress...
                         </p>
@@ -469,7 +657,17 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                     <button
                       type="button"
                       onClick={stopAudioRecording}
-                      className="inline-flex items-center px-8 py-4 bg-linear-to-r from-gray-800 to-gray-900 text-white rounded-full hover:from-gray-900 hover:to-black transition-all duration-200 shadow-xl font-bold text-lg"
+                      className="inline-flex items-center px-8 py-4 rounded-full transition-all duration-300"
+                      style={{
+                        background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
+                        color: '#fff',
+                        fontFamily: '"Lora", serif',
+                        fontWeight: 700,
+                        fontSize: '1.1rem',
+                        boxShadow: '0 6px 20px rgba(0, 0, 0, 0.15)',
+                        border: 'none',
+                        cursor: 'pointer'
+                      }}
                     >
                       <svg
                         className="w-6 h-6 mr-2"
@@ -484,10 +682,20 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 )}
               </div>
             ) : (
-              <div className="border-2 border-green-300 bg-linear-to-br from-green-50 to-emerald-50 rounded-2xl p-6 shadow-lg">
+              <div style={{
+                border: '2px solid #86efac',
+                background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+                borderRadius: 20,
+                padding: 24,
+                boxShadow: '0 4px 16px rgba(34, 197, 94, 0.1)'
+              }}>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="bg-green-500 rounded-full p-2">
+                    <div style={{
+                      background: '#22c55e',
+                      borderRadius: '50%',
+                      padding: 8
+                    }}>
                       <svg
                         className="w-5 h-5 text-white"
                         fill="currentColor"
@@ -500,14 +708,33 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                         />
                       </svg>
                     </div>
-                    <span className="text-base font-bold text-green-900">
+                    <span style={{
+                      fontFamily: '"Playfair Display", serif',
+                      fontSize: '1rem',
+                      fontWeight: 700,
+                      color: '#14532d'
+                    }}>
                       Recording Complete
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={deleteAudioRecording}
-                    className="text-red-600 hover:text-red-800 font-semibold flex items-center bg-red-100 hover:bg-red-200 px-4 py-2 rounded-lg transition-all"
+                    className="flex items-center px-4 py-2 rounded-lg transition-all"
+                    style={{
+                      color: '#dc2626',
+                      background: '#fee2e2',
+                      fontFamily: '"Poppins", sans-serif',
+                      fontWeight: 600,
+                      border: 'none',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#fecaca';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#fee2e2';
+                    }}
                   >
                     <svg
                       className="w-5 h-5 mr-1"
@@ -529,10 +756,20 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                   className="w-full rounded-lg shadow-md"
                 />
                 <div className="mt-3 flex items-center justify-between text-sm">
-                  <span className="text-gray-700 font-medium">
+                  <span style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    color: '#333333',
+                    fontWeight: 500
+                  }}>
                     Duration: {formatTime(recordingTime)}
                   </span>
-                  <span className="text-gray-600 text-xs">audio/webm</span>
+                  <span style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '0.8rem',
+                    color: '#666'
+                  }}>
+                    audio/webm
+                  </span>
                 </div>
               </div>
             )}
@@ -543,11 +780,22 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
         return (
           <div className="space-y-4">
             {!recordedVideo ? (
-              <div className="border-3 border-dashed border-gray-300 rounded-2xl p-8 text-center hover:border-purple-400 hover:bg-purple-50/30 transition-all">
+              <div style={{
+                border: '3px dashed #B7966B',
+                borderRadius: 20,
+                padding: 32,
+                textAlign: 'center',
+                background: '#FBF9F6',
+                transition: 'all 0.3s ease'
+              }}>
                 {!isVideoRecording ? (
                   <div className="space-y-4">
                     <div className="flex justify-center">
-                      <div className="bg-linear-to-br from-purple-700 to-orange-400 p-4 rounded-full">
+                      <div style={{
+                        background: 'linear-gradient(135deg, #592D4A 0%, #A67390 100%)',
+                        padding: 16,
+                        borderRadius: '50%'
+                      }}>
                         <svg
                           className="w-10 h-10 text-white"
                           fill="currentColor"
@@ -560,7 +808,27 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                     <button
                       type="button"
                       onClick={startVideoRecording}
-                      className="inline-flex items-center px-8 py-4 bg-linear-to-r from-purple-700 to-orange-400 text-white rounded-full hover:from-purple-800 hover:to-orange-500 transition-all duration-200 shadow-xl font-bold text-lg transform hover:scale-105"
+                      className="inline-flex items-center px-8 py-4 rounded-full transform transition-all duration-300"
+                      style={{
+                        background: '#592D4A',
+                        color: '#FBF9F6',
+                        fontFamily: '"Lora", serif',
+                        fontWeight: 700,
+                        fontSize: '1.1rem',
+                        boxShadow: '0 6px 20px rgba(89, 45, 74, 0.15)',
+                        border: 'none',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = '#432235';
+                        e.currentTarget.style.boxShadow = '0 8px 28px rgba(89, 45, 74, 0.25)';
+                        e.currentTarget.style.transform = 'scale(1.05)';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = '#592D4A';
+                        e.currentTarget.style.boxShadow = '0 6px 20px rgba(89, 45, 74, 0.15)';
+                        e.currentTarget.style.transform = 'scale(1)';
+                      }}
                     >
                       <svg
                         className="w-6 h-6 mr-2"
@@ -571,12 +839,21 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                       </svg>
                       Start Video Recording
                     </button>
-                    <p className="text-sm text-gray-600 font-medium">
+                    <p style={{
+                      fontFamily: '"Poppins", sans-serif',
+                      fontSize: '0.95rem',
+                      color: '#333333',
+                      fontWeight: 500
+                    }}>
                       {field.placeholder ||
                         "Click to start recording video with your camera"}
                     </p>
                     {field.recordingConfig?.maxDuration && (
-                      <p className="text-xs text-gray-500">
+                      <p style={{
+                        fontFamily: '"Poppins", sans-serif',
+                        fontSize: '0.8rem',
+                        color: '#666'
+                      }}>
                         Max duration:{" "}
                         {Math.floor(field.recordingConfig.maxDuration / 60)}{" "}
                         minutes
@@ -590,20 +867,39 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                       autoPlay
                       muted
                       playsInline
-                      className="w-full max-w-2xl mx-auto rounded-2xl shadow-2xl border-4 border-purple-300"
+                      className="w-full max-w-2xl mx-auto rounded-2xl shadow-2xl"
+                      style={{
+                        border: '4px solid #A67390'
+                      }}
                     />
                     <div className="flex items-center justify-center space-x-4">
                       <span className="flex h-5 w-5 relative">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                         <span className="relative inline-flex rounded-full h-5 w-5 bg-red-500"></span>
                       </span>
-                      <span className="text-3xl font-mono font-extrabold text-red-600">
+                      <span style={{
+                        fontFamily: 'monospace',
+                        fontSize: '2rem',
+                        fontWeight: 800,
+                        color: '#dc2626'
+                      }}>
                         {formatTime(videoRecordingTime)}
                       </span>
                     </div>
                     <div className="flex justify-center">
-                      <div className="bg-red-100 px-6 py-2 rounded-full">
-                        <p className="text-sm text-red-700 font-bold flex items-center">
+                      <div style={{
+                        background: '#fee2e2',
+                        padding: '8px 24px',
+                        borderRadius: 999
+                      }}>
+                        <p style={{
+                          fontFamily: '"Poppins", sans-serif',
+                          fontSize: '0.9rem',
+                          color: '#991b1b',
+                          fontWeight: 700,
+                          display: 'flex',
+                          alignItems: 'center'
+                        }}>
                           <span className="animate-pulse mr-2">●</span>
                           Recording video...
                         </p>
@@ -612,7 +908,17 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                     <button
                       type="button"
                       onClick={stopVideoRecording}
-                      className="inline-flex items-center px-8 py-4 bg-linear-to-r from-gray-800 to-gray-900 text-white rounded-full hover:from-gray-900 hover:to-black transition-all duration-200 shadow-xl font-bold text-lg"
+                      className="inline-flex items-center px-8 py-4 rounded-full transition-all duration-300"
+                      style={{
+                        background: 'linear-gradient(135deg, #1f2937 0%, #111827 100%)',
+                        color: '#fff',
+                        fontFamily: '"Lora", serif',
+                        fontWeight: 700,
+                        fontSize: '1.1rem',
+                        boxShadow: '0 6px 20px rgba(0, 0, 0, 0.15)',
+                        border: 'none',
+                        cursor: 'pointer'
+                      }}
                     >
                       <svg
                         className="w-6 h-6 mr-2"
@@ -627,10 +933,20 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 )}
               </div>
             ) : (
-              <div className="border-2 border-purple-300 bg-linear-to-br from-purple-50 to-pink-50 rounded-2xl p-6 shadow-lg">
+              <div style={{
+                border: '2px solid #c4b5fd',
+                background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)',
+                borderRadius: 20,
+                padding: 24,
+                boxShadow: '0 4px 16px rgba(139, 92, 246, 0.1)'
+              }}>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    <div className="bg-purple-500 rounded-full p-2">
+                    <div style={{
+                      background: '#A67390',
+                      borderRadius: '50%',
+                      padding: 8
+                    }}>
                       <svg
                         className="w-5 h-5 text-white"
                         fill="currentColor"
@@ -643,14 +959,33 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                         />
                       </svg>
                     </div>
-                    <span className="text-base font-bold text-purple-900">
+                    <span style={{
+                      fontFamily: '"Playfair Display", serif',
+                      fontSize: '1rem',
+                      fontWeight: 700,
+                      color: '#592D4A'
+                    }}>
                       Video Recording Complete
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={deleteVideoRecording}
-                    className="text-red-600 hover:text-red-800 font-semibold flex items-center bg-red-100 hover:bg-red-200 px-4 py-2 rounded-lg transition-all"
+                    className="flex items-center px-4 py-2 rounded-lg transition-all"
+                    style={{
+                      color: '#dc2626',
+                      background: '#fee2e2',
+                      fontFamily: '"Poppins", sans-serif',
+                      fontWeight: 600,
+                      border: 'none',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#fecaca';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = '#fee2e2';
+                    }}
                   >
                     <svg
                       className="w-5 h-5 mr-1"
@@ -670,13 +1005,26 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                   ref={previewVideoRef}
                   src={recordedVideo}
                   controls
-                  className="w-full rounded-xl shadow-2xl border-2 border-purple-200"
+                  className="w-full rounded-xl shadow-2xl"
+                  style={{
+                    border: '2px solid #c4b5fd'
+                  }}
                 />
                 <div className="mt-3 flex items-center justify-between text-sm">
-                  <span className="text-gray-700 font-medium">
+                  <span style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    color: '#333333',
+                    fontWeight: 500
+                  }}>
                     Duration: {formatTime(videoRecordingTime)}
                   </span>
-                  <span className="text-gray-600 text-xs">video/webm</span>
+                  <span style={{
+                    fontFamily: '"Poppins", sans-serif',
+                    fontSize: '0.8rem',
+                    color: '#666'
+                  }}>
+                    video/webm
+                  </span>
                 </div>
               </div>
             )}
@@ -691,13 +1039,50 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
                 type="file"
                 onChange={handleChange}
                 accept={field.validation?.allowedFileTypes?.join(",")}
-                className="block w-full text-base text-gray-700 bg-white border-2 border-gray-300 rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent file:mr-4 file:py-3 file:px-6 file:rounded-l-xl file:border-0 file:text-base file:font-semibold file:bg-linear-to-r file:from-purple-700 file:to-orange-400 file:text-white hover:file:from-purple-800 hover:file:to-orange-500 file:cursor-pointer transition-all"
+                className="block w-full text-base cursor-pointer focus:outline-none transition-all"
                 required={field.isRequired}
+                style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  color: '#333333',
+                  background: '#fff',
+                  border: '2px solid #E5D2C7',
+                  borderRadius: 16,
+                  padding: 0
+                }}
               />
+              <style jsx>{`
+                input[type="file"]::file-selector-button {
+                  margin-right: 16px;
+                  padding: 12px 24px;
+                  border-radius: 16px 0 0 16px;
+                  border: 0;
+                  font-size: 1rem;
+                  font-weight: 600;
+                  font-family: "Lora", serif;
+                  background: #592D4A;
+                  color: #FBF9F6;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                }
+                input[type="file"]::file-selector-button:hover {
+                  background: #432235;
+                }
+              `}</style>
             </div>
             {field.validation?.maxSize && (
-              <div className="bg-purple-50 border border-purple-200 rounded-lg p-3">
-                <p className="text-xs text-purple-700 flex items-center">
+              <div style={{
+                background: '#F0E6ED',
+                border: '1px solid #B7966B',
+                borderRadius: 10,
+                padding: 12
+              }}>
+                <p style={{
+                  fontFamily: '"Poppins", sans-serif',
+                  fontSize: '0.85rem',
+                  color: '#592D4A',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
                   <svg
                     className="w-4 h-4 mr-1"
                     fill="currentColor"
@@ -715,7 +1100,11 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
               </div>
             )}
             {field.validation?.allowedFileTypes && (
-              <p className="text-xs text-gray-500">
+              <p style={{
+                fontFamily: '"Poppins", sans-serif',
+                fontSize: '0.8rem',
+                color: '#666'
+              }}>
                 Accepted formats: {field.validation.allowedFileTypes.join(", ")}
               </p>
             )}
@@ -728,16 +1117,45 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
   };
 
   return (
-    <div className="mb-6">
-      <label className="block text-sm font-bold text-gray-800 mb-2">
+    <div
+      className="mb-8"
+      style={{
+        background: '#FFFFFF', // Clean White interior
+        borderRadius: 18,
+        boxShadow: '0 2px 18px rgba(89,45,74,0.08)',
+        padding: '26px 22px',
+        border: '1px solid #E5D2C7' // Subtle accent border
+      }}
+    >
+      <label
+        className="block mb-3"
+        style={{
+          color: '#333333',
+          fontFamily: '"Playfair Display", "Lora", serif',
+          fontWeight: 600,
+          fontSize: '1.13rem',
+          letterSpacing: '0.01em'
+        }}
+      >
         {field.fieldLabel}
-        {field.isRequired && <span className="text-red-500 ml-1">*</span>}
+        {field.isRequired && <span style={{ color: '#A67390', marginLeft: 5 }}>*</span>}
       </label>
       {renderField()}
       {error && (
-        <p className="mt-2 text-sm text-red-600 flex items-center bg-red-50 border border-red-200 rounded-lg p-2">
+        <div style={{
+          color: '#A67390',
+          background: '#FBF9F6',
+          border: '1.5px solid #A67390',
+          borderRadius: 7,
+          fontFamily: '"Poppins", sans-serif',
+          padding: '7px 12px',
+          fontSize: '0.96rem',
+          marginTop: 8,
+          display: 'flex',
+          alignItems: 'center'
+        }}>
           <svg
-            className="w-4 h-4 mr-1 shrink-0"
+            className="w-4 h-4 mr-2 shrink-0"
             fill="currentColor"
             viewBox="0 0 20 20"
           >
@@ -748,36 +1166,61 @@ const FormField = ({ field, value, onChange, onFileChange, error }) => {
             />
           </svg>
           {error}
-        </p>
+        </div>
       )}
       {field.validation?.maxLength && field.fieldType === "textarea" && (
-        <div className="mt-2 flex justify-between items-center">
-          <p className="text-sm text-gray-600">
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginTop: 8
+        }}>
+          <span style={{
+            fontFamily: '"Poppins", sans-serif',
+            color: '#592D4A',
+            fontWeight: 500,
+            fontSize: '0.95rem'
+          }}>
             {value?.length || 0} / {field.validation.maxLength} characters
-          </p>
+          </span>
           {value?.length > field.validation.maxLength * 0.9 && (
-            <span className="text-xs text-orange-600 font-semibold">
+            <span style={{
+              color: '#A67390',
+              fontFamily: '"Playfair Display", serif',
+              fontWeight: 700,
+              fontSize: '0.86rem'
+            }}>
               Approaching limit
             </span>
           )}
         </div>
       )}
       {field.helpText && (
-        <div className="mt-2 bg-gray-50 border border-gray-200 rounded-lg p-3">
-          <p className="text-sm text-gray-600 flex items-start">
-            <svg
-              className="w-4 h-4 mr-2 mt-0.5 shrink-0 text-gray-400"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
-                clipRule="evenodd"
-              />
-            </svg>
-            {field.helpText}
-          </p>
+        <div style={{
+          background: '#F0F0F0',
+          border: '1px solid #E5D2C7',
+          borderRadius: 8,
+          fontFamily: '"Poppins", sans-serif',
+          padding: '11px 14px',
+          fontSize: '0.95rem',
+          color: '#333333',
+          marginTop: 8,
+          display: 'flex',
+          alignItems: 'start'
+        }}>
+          <svg
+            className="w-4 h-4 mr-2 mt-0.5 shrink-0"
+            style={{ color: '#999' }}
+            fill="currentColor"
+            viewBox="0 0 20 20"
+          >
+            <path
+              fillRule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z"
+              clipRule="evenodd"
+            />
+          </svg>
+          {field.helpText}
         </div>
       )}
     </div>

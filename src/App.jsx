@@ -125,7 +125,7 @@ function App() {
       
       {/* Application Form - Shows below hero section after clicking Apply */}
       {showForm && (
-        <div ref={formRef} className="bg-white py-16">
+        <div ref={formRef} className="bg-white">
           <JobApplicationForm jobData={jobData} />
         </div>
       )}
