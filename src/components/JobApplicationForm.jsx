@@ -456,29 +456,40 @@ const JobApplicationForm = ({ jobData }) => {
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4 flex-1">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+                <div className="flex items-center space-x-4 w-full sm:flex-1">
                   <div className="shrink-0">{getFileIcon(media.mimeType)}</div>
 
                   <div className="flex-1 min-w-0">
-                    <p style={{
-                      fontFamily: '"Poppins", sans-serif',
-                      fontSize: '1rem',
-                      fontWeight: 600,
-                      color: '#333',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
-                    }}>
+                    <p 
+                      className="tooltip"
+                      data-tooltip={media.filename || "Document"}
+                      style={{
+                        fontFamily: '"Poppins", sans-serif',
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        color: '#333',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
                       {media.filename || "Document"}
                     </p>
                     {media.caption && (
-                      <p style={{
-                        fontFamily: '"Poppins", sans-serif',
-                        fontSize: '0.9rem',
-                        color: '#666',
-                        marginTop: 4
-                      }}>
+                      <p 
+                        className="tooltip"
+                        data-tooltip={media.caption}
+                        style={{
+                          fontFamily: '"Poppins", sans-serif',
+                          fontSize: '0.9rem',
+                          color: '#666',
+                          marginTop: 4,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap'
+                        }}
+                      >
                         {media.caption}
                       </p>
                     )}
@@ -514,7 +525,7 @@ const JobApplicationForm = ({ jobData }) => {
                   href={media.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="ml-4 shrink-0 flex items-center space-x-2 transition-all duration-200"
+                  className="w-full sm:w-auto ml-0 sm:ml-4 shrink-0 flex items-center justify-center sm:justify-start space-x-2 transition-all duration-200"
                   style={{
                     background: '#592D4A',
                     color: '#FBF9F6',
@@ -733,6 +744,58 @@ const JobApplicationForm = ({ jobData }) => {
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800&family=Lora:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+          
+          .tooltip {
+            position: relative;
+            cursor: help;
+          }
+          
+          .tooltip::before {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #592D4A;
+            color: #FBF9F6;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(89, 45, 74, 0.25);
+            max-width: 250px;
+            text-align: center;
+          }
+          
+          .tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #592D4A;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+          }
+          
+          .tooltip:hover::before,
+          .tooltip:hover::after {
+            opacity: 1;
+            visibility: visible;
+          }
+          
+          .tooltip[data-tooltip]:hover::before {
+            white-space: normal;
+            max-width: 250px;
+          }
         `}
       </style>
       <div className="max-w-5xl mx-auto">
